@@ -4,13 +4,13 @@ jobs:
   Build Tensorflow:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Tensorflow
+      - name: Checkout-Tensorflow
         uses: actions/checkout@main
         with:
           repository: tensorflow/tensorflow
           path: tensorflow
-      - name: Setup Bazel
+      - name: Setup-Bazel
         uses: abhinavsingh/setup-bazel@v3
-      - name: Build [?]
+      - name: Build-[?]
         run: bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
       - run: ls -l

@@ -1,16 +1,13 @@
 name: Action 1
 on: workflow_dispatch
 jobs:
-  Build Tensorflow:
+  build_tensorflow:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout-Tensorflow
-        uses: actions/checkout@main
+      - uses: actions/checkout@main
         with:
           repository: tensorflow/tensorflow
           path: tensorflow
-      - name: Setup-Bazel
-        uses: abhinavsingh/setup-bazel@v3
-      - name: Build-[?]
-        run: bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
+      - uses: abhinavsingh/setup-bazel@v3
+      - run: bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
       - run: ls -l

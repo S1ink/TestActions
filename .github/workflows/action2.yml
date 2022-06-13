@@ -9,9 +9,7 @@ jobs:
         uses: actions/checkout@main
         with:
           repository: google-coral/libedgetpu
-      - name: Config
-        run: |
-          ls -l
-          sed 's/TENSORFLOW_COMMIT = .*/TENSORFLOW_COMMIT = {{ SOME TEXT }}/' ./workspace.bzl
-          sed 's/TENSORFLOW_SHA256 = .*/TENSORFLOW_SHA256 = {{ SOME TEXT }}/' ./workspace.bzl
-          cat ./workspace.bzl
+#      - name: Config
+      - run: sed 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = {{ SOME TEXT }}/' ./workspace.bzl
+      - run: sed 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = {{ SOME TEXT }}/' ./workspace.bzl
+      - run: cat ./workspace.bzl

@@ -14,6 +14,7 @@ jobs:
 #         with:
 #           args: build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
       - run: npm install @bazel/bazelisk
+      - run: pip install numpy
 #      - run: cd GITHUB_WORKSPACE
 #      - run: ls -l
       - run: cd tensorflow

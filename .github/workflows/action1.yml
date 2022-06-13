@@ -4,10 +4,12 @@ jobs:
   build_tensorflow:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout Tensorflow
+        uses: actions/checkout@main
         with:
           repository: tensorflow/tensorflow
-      - uses: abhinavsingh/setup-bazel@v3
+      - name: Bazel Action
+        uses: ngalaiko/bazel-action@2.0.0
 #      - run: cd GITHUB_WORKSPACE
 #      - run: ls -l
       - run: cd tensorflow

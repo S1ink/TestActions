@@ -4,4 +4,8 @@ jobs:
   test_run:
     runs-on: ubuntu-latest
     steps:
-      - run: ls -l
+      - run: echo '::echo::on'
+      - run: |
+          mkdir test
+          mkdir test2
+          ls -l

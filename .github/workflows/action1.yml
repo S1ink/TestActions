@@ -8,10 +8,12 @@ jobs:
         uses: actions/checkout@main
         with:
           repository: tensorflow/tensorflow
+      - run: cd tensorflow
       - name: Bazel Action
         uses: ngalaiko/bazel-action@2.0.0
+        with:
+          args: build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
 #      - run: cd GITHUB_WORKSPACE
 #      - run: ls -l
-      - run: cd tensorflow
-      - run: bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
+#      - run: bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
 #      - run: ls -l

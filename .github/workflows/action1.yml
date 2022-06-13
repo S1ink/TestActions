@@ -4,19 +4,26 @@ jobs:
   build_tensorflow:
     runs-on: ubuntu-latest
     steps:
+      - run: echo '::echo::on'
       - name: Checkout Tensorflow
         uses: actions/checkout@main
         with:
           repository: tensorflow/tensorflow
-#       - run: cd tensorflow
-#       - name: Bazel Action
-#         uses: ngalaiko/bazel-action@2.0.0
-#         with:
-#           args: build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
-      - run: npm install @bazel/bazelisk
-      - run: pip install numpy
-#      - run: cd GITHUB_WORKSPACE
-#      - run: ls -l
-      - run: cd tensorflow
-      - run: bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
-#      - run: ls -l
+      - name: Get Deps
+        run: |
+          npm install @bazel/bazelisk
+          pip install numpy
+      - name: Build
+        run: |
+          cd tensorflow
+          bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
+      - name: Copy Artifact
+        run: |
+          cd ..
+          mkdir artifacts
+          cp tensorflow/bazel-bin/tensorflow/lite/libtensorflowlite.so artifacts
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with: 
+          name: build-output
+          path: artifacts

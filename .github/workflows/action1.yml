@@ -6,12 +6,10 @@ jobs:
     steps:
       - run: echo '::echo::on'
 
-      - name: Get Latest Release
+      - name: Get TF Latest Release
         id: tf-latestrelease
         run: |
           echo "::set-output name=releasetag::$(curl -s https://api.github.com/repos/tensorflow/tensorflow/releases/latest | jq '.tag_name' | sed 's/\"//g')"
-      - name: confirm release tag
-        run: |
           echo ${{ steps.tf-latestrelease.outputs.releasetag }}
 
       - name: Checkout Tensorflow
@@ -19,18 +17,23 @@ jobs:
         with:
           repository: tensorflow/tensorflow
           ref: ${{ steps.tf-latestrelease.outputs.releasetag }}
+
       - name: Get Deps
         run: |
           npm install @bazel/bazelisk
           pip install numpy
+
       - name: Build
         run: |
           cd tensorflow
           bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
+
       - name: Copy Artifact
         run: |
           mkdir artifacts
+          find ./tensorflow -name '*.h' | cpio -pdm ./artifacts
           cp bazel-bin/tensorflow/lite/libtensorflowlite.so artifacts
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with: 

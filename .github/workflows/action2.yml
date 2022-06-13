@@ -10,6 +10,6 @@ jobs:
         with:
           repository: google-coral/libedgetpu
 #      - name: Config
-      - run: sed 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = {{ SOME TEXT }}/' ./workspace.bzl
-      - run: sed 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = {{ SOME TEXT }}/' ./workspace.bzl
+      - run: sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = {{ SOME TEXT }}/' ./workspace.bzl
+      - run: sed -i 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = {{ SOME TEXT }}/' ./workspace.bzl
       - run: cat ./workspace.bzl

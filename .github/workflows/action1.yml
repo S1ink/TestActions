@@ -8,12 +8,14 @@ jobs:
         uses: actions/checkout@main
         with:
           repository: tensorflow/tensorflow
-      - run: cd tensorflow
-      - name: Bazel Action
-        uses: ngalaiko/bazel-action@2.0.0
-        with:
-          args: build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
+#       - run: cd tensorflow
+#       - name: Bazel Action
+#         uses: ngalaiko/bazel-action@2.0.0
+#         with:
+#           args: build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
+      - run: sudo apt update && sudo apt install bazel-5.1.1
 #      - run: cd GITHUB_WORKSPACE
 #      - run: ls -l
-#      - run: bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
+      - run: cd tensorflow
+      - run: bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
 #      - run: ls -l

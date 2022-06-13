@@ -19,14 +19,10 @@ jobs:
           bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
       - name: Copy Artifact
         run: |
-          ls -l
-          cd ../
           mkdir artifacts
-          ls -l
-          cd tensorflow
           cp bazel-bin/tensorflow/lite/libtensorflowlite.so ../artifacts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with: 
           name: build-output
-          path: ../artifacts
+          path: artifacts

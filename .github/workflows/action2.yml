@@ -5,7 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo '::echo::on'
-      - run: |
-          mkdir test
-          mkdir test2
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          repository: google-coral/libedgetpu
+      - name: Config
+        run: |
           ls -l
+          sed 's/TENSORFLOW_COMMIT = .*/TENSORFLOW_COMMIT = {{ SOME TEXT }}/' ./workspace.bzl
+          sed 's/TENSORFLOW_SHA256 = .*/TENSORFLOW_SHA256 = {{ SOME TEXT }}/' ./workspace.bzl
+          cat ./workspace.bzl

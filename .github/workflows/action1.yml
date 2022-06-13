@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@main
         with:
           repository: tensorflow/tensorflow
-          path: tensorflow
       - uses: abhinavsingh/setup-bazel@v3
+      - run: cd GITHUB_WORKSPACE/tensorflow
       - run: bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
       - run: ls -l

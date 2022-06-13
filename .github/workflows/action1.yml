@@ -5,10 +5,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo '::echo::on'
+
+      - name: Get Latest Release
+        id: tf-latestrelease
+        run: |
+          echo "::set-output name=releasetag::$(curl -s https://api.github.com/repos/tensorflow/tensorflow/releases/latest | jq '.tag_name' | sed 's/\"//g')"
+      - name: confirm release tag
+        run: |
+          echo ${{ steps.tf-latestrelease.outputs.releasetag }}
+
       - name: Checkout Tensorflow
         uses: actions/checkout@main
         with:
           repository: tensorflow/tensorflow
+          ref: ${{ steps.tf-latestrelease.outputs.releasetag }}
       - name: Get Deps
         run: |
           npm install @bazel/bazelisk
@@ -20,7 +30,7 @@ jobs:
       - name: Copy Artifact
         run: |
           mkdir artifacts
-          cp bazel-bin/tensorflow/lite/libtensorflowlite.so ../artifacts
+          cp bazel-bin/tensorflow/lite/libtensorflowlite.so artifacts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with: 

@@ -41,13 +41,13 @@ jobs:
         run: |
           DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-direct make docker-build
           cp ./out/direct/armv7a/libedgetpu.so.1.0 ./artifacts/direct-stripped-libedgetpu.so
-          cp ./bazel-out/armv7a-out/bin/tflite/public/libedgetpu_direct_all.so ./artifacts/direct-libedgetpu.so
+          cp ./bazel-out/armv7a-opt/bin/tflite/public/libedgetpu_direct_all.so ./artifacts/direct-libedgetpu.so
 
       - name: Build Throttled
         run: |
           DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-throttled make docker-build
           cp ./out/throttled/armv7a/libedgetpu.so.1.0 ./artifacts/throttled-stripped-libedgetpu.so
-          cp ./bazel-out/armv7a-out/bin/tflite/public/libedgetpu_direct_all.so ./artifacts/throttled-libedgetpu.so
+          cp ./bazel-out/armv7a-opt/bin/tflite/public/libedgetpu_direct_all.so ./artifacts/throttled-libedgetpu.so
           
       - name: Upload Artifacts
         uses: actions/upload-artifact@main

@@ -10,7 +10,6 @@ jobs:
         uses: actions/checkout@main
         with:
           repository: google-coral/libedgetpu
-#      - name: Config
 
       - name: Get TF Latest Release
         id: tf-latestrelease
@@ -23,9 +22,13 @@ jobs:
         run: |
           echo "::set-output name=commit::$(git ls-remote https://github.com/tensorflow/tensorflow refs/tags/${{ steps.tf-latestrelease.outputs.releasetag }} | awk '{print $1}')"
           echo "::set-output name=sha256::$(curl -L "https://github.com/tensorflow/tensorflow/archive/${{ steps.tf-latestcommit.outputs.commit }}.tar.gz" | sha256sum | awk '{print $1}')"
-          echo ${{ steps.tf-latestcommit.outputs.commit }}
-          echo ${{ steps.tf-latestcommit.outputs.sha256 }}
 
-      - run: sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = "${{ steps.tf-latestcommit.outputs.commit }}"/' ./workspace.bzl
-      - run: sed -i 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = "${{ steps.tf-latestcommit.outputs.sha256 }}"/' ./workspace.bzl
+      - name: Configure Build
+        run: |
+          sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = "${{ steps.tf-latestcommit.outputs.commit }}"/' ./workspace.bzl
+          sed -i 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = "${{ steps.tf-latestcommit.outputs.sha256 }}"/' ./workspace.bzl
       - run: cat ./workspace.bzl
+      - run: ./docker/update_sources.sh
+      - run: |
+          apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libc6-dev:arm64 libc6-dev:armhf && DEBIAN_FRONTEND=noninteractive apt-get install -y python3-all python3-numpy build-essential crossbuild-essential-armhf crossbuild-essential-arm64 libusb-1.0-0-dev libusb-1.0-0-dev:arm64 libusb-1.0-0-dev:armhf zlib1g-dev zlib1g-dev:armhf zlib1g-dev:arm64 sudo debhelper pkg-config zip unzip curl wget git tree software-properties-common $(grep Ubuntu /etc/os-release > /dev/null && echo vim-common || echo xxd)
+      - run: CPU=armv7a make

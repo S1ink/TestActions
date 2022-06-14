@@ -18,8 +18,11 @@ jobs:
           echo "::set-output name=releasetag::$(curl -s https://api.github.com/repos/tensorflow/tensorflow/releases/latest | jq '.tag_name' | sed 's/\"//g')"
           echo ${{ steps.tf-latestrelease.outputs.releasetag }}
 
-      - run: |
-          git ls-remote https://github.com/tensorflow/tensorflow.git refs/tags/${{ steps.tf-latestrelease.outputs.releasetag }}
-      - run: sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = {{ SOME TEXT }}/' ./workspace.bzl
+      - name: Get Commit
+        id: tf-latestcommit
+        run: |
+          echo "::set-output name=commit::$(git ls-remote https://github.com/tensorflow/tensorflow.git refs/tags/${{ steps.tf-latestrelease.outputs.releasetag }} | awk '{print $1}')"
+          echo ${{ steps.tf-latestcommit.outputs.commit }}
+      - run: sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = ${{ steps.tf-latestcommit.outputs.commit }}/' ./workspace.bzl
       - run: sed -i 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = {{ SOME TEXT }}/' ./workspace.bzl
       - run: cat ./workspace.bzl

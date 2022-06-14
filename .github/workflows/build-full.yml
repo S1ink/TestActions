@@ -76,6 +76,7 @@ jobs:
         run: |
           DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-direct make docker-build
           cp out/direct/armv7a/libedgetpu.so.1.0 artifacts/direct-stripped-libedgetpu.so
+          ls -l
           cd bazel-out
           ls -l
           cd armv7a
@@ -95,7 +96,9 @@ jobs:
           cp out/throttled/armv7a/libedgetpu.so.1.0 artifacts/throttled-stripped-libedgetpu.so
 #          cp bazel-out/armv7a-opt/bin/tflite/public/libedgetpu_direct_all.so artifacts/throttled-libedgetpu.so
       
-      - run: cp tflite/public/edgetpu.h artifacts
+      - name: Copy Headers
+        if: always()
+        run: cp tflite/public/edgetpu.h artifacts
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@main

@@ -2,7 +2,7 @@ name: Build Deps
 on: workflow_dispatch
 jobs:
  
-  prep-latest:
+  get-latest-release:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.latest-tag.outputs.tag }}
@@ -16,7 +16,7 @@ jobs:
       - name: Get latest TF commit
         id: latest-commit
         run: echo "::set-output name=commit::$(git ls-remote https://github.com/tensorflow/tensorflow refs/tags/${{ steps.latest-tag.outputs.tag }} | awk '{print $1}')"
-      - name:
+      - name: Get latest TF hash code
         id: latest-hash
         run: echo "::set-output name=sha256::$(curl -L "https://github.com/tensorflow/tensorflow/archive/${{ steps.latest-commit.outputs.commit }}.tar.gz" | sha256sum | awk '{print $1}')"
       - name: Confirm Info
@@ -27,14 +27,14 @@ jobs:
           
   build-tflite:
     runs-on: ubuntu-latest
-    needs: prep-latest
+    needs: get-latest-release
     steps:
       - run: echo '::echo::on'
       - name: Checkout Tensorflow
         uses: actions/checkout@main
         with:
           repository: tensorflow/tensorflow
-          ref: ${{ needs.prep-latest.outputs.tag }}
+          ref: ${{ needs.get-latest-release.outputs.tag }}
       - name: Get Deps
         run: |
           npm install @bazel/bazelisk
@@ -42,6 +42,7 @@ jobs:
       - name: Build
         run: |
           cd tensorflow
+          ls -l
           bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
       - name: Copy Artifact
         run: |
@@ -56,7 +57,7 @@ jobs:
           
   build-edgetpu:
     runs-on: ubuntu-latest
-    needs: prep-latest
+    needs: get-latest-release
     steps:
       - run: echo '::echo::on'
       - name: Checkout Libedgetpu
@@ -65,40 +66,35 @@ jobs:
           repository: google-coral/libedgetpu
       - name: Configure Build
         run: |
-          sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = "${{ needs.prep-latest.outputs.commit }}"/' ./workspace.bzl
-          sed -i 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = "${{ needs.prep-latest.outputs.sha256 }}"/' ./workspace.bzl
+          sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = "${{ needs.get-latest-release.outputs.commit }}"/' ./workspace.bzl
+          sed -i 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = "${{ needs.get-latest-release.outputs.sha256 }}"/' ./workspace.bzl
           cat ./workspace.bzl
           mkdir artifacts
       - name: Build Docker Image
         run: DOCKER_IMAGE="debian:stretch" make docker-image
         
       - name: Build Direct
+        run: DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-direct make docker-build
+          
+      - name: Copy Direct
         run: |
-          DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-direct make docker-build
           cp out/direct/armv7a/libedgetpu.so.1.0 artifacts/direct-stripped-libedgetpu.so
-          ls -l
-          cd bazel-out
-          ls -l
-          cd armv7a
-          ls -l
-          cd bin
-          ls -l
-          cd tflite
-          ls -l
-          cd public
-          ls -l
-#          cp bazel-out/armv7a-opt/bin/tflite/public/libedgetpu_direct_all.so artifacts/direct-libedgetpu.so
+          cp bazel-out/armv7a-opt/bin/tflite/public/libedgetpu_direct_all.so artifacts/direct-libedgetpu.so
+
       - name: Build Throttled
         if: always()
+        run: DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-throttled make docker-build
+          
+      - name: Copy Throttled
+        if: always()
         run: |
-          cd $GITHUB_WORKSPACE
-          DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-throttled make docker-build
           cp out/throttled/armv7a/libedgetpu.so.1.0 artifacts/throttled-stripped-libedgetpu.so
-#          cp bazel-out/armv7a-opt/bin/tflite/public/libedgetpu_direct_all.so artifacts/throttled-libedgetpu.so
+          cp bazel-out/armv7a-opt/bin/tflite/public/libedgetpu_direct_all.so artifacts/throttled-libedgetpu.so
       
       - name: Copy Headers
         if: always()
         run: cp tflite/public/edgetpu.h artifacts
+
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@main

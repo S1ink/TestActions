@@ -45,7 +45,7 @@ jobs:
           wget https://github.com/wpilibsuite/WPILibPi/releases/download/${{ needs.get-latest-releases.outputs.wpilibpi-tag }}/cpp-multiCameraServer.zip
           sudo apt-get install unzip
           mkdir {out,artifacts}
-          unzip cpp-multiCameraServer.zip out
+          unzip cpp-multiCameraServer.zip  -d out
           cp -R out/cpp-multiCameraServer/lib artifacts
           cp -R out/cpp-multiCameraServer/include artifacts
       - uses: actions/upload-artifact@main
@@ -67,8 +67,8 @@ jobs:
         run: sudo apt-get install gcc-arm-linux-gnueabihf
       - name: Build and Copy
         run: |
-         gcc-arm-linux-gnueabihf --version
-         CROSS_PREFIX=gcc-arm-linux-gnueabihf- make lib
+         arm-linux-gnueabihf-gcc --version
+         CROSS_PREFIX=arm-linux-gnueabihf- make lib
          mkdir artifacts
          cp libpigpio.so artifacts
          cp pigpio.h artifacts

@@ -12,9 +12,7 @@ jobs:
         with:
           repository: wpilibsuite/WPILibPi
           ref: ${{ steps.tag.outputs.tag }}
-      - run: sudo apt-get install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
-          dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
-          xxd build-essential cmake python3 python3-distutils ant sudo openjdk-11-jdk
-      - run: sudo ./stage3/01-sys-tweaks/01-run.sh
+      - run: docker build --build-arg BASE_IMAGE=debian:buster -t pi-gen "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+      - run: docker run --rm --privilaged pi-gen base -e -o pipefail -c "./stage3/01-sys-tweaks/01-run.sh && ls -l"
       - run: ls -l
       

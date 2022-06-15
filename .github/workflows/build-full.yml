@@ -140,3 +140,10 @@ jobs:
         with:
           name: build-edgetpu
           path: artifacts
+  compile:
+    runs-on: ubuntu-latest
+    needs: [extract-wpilibpi,build-pigpio,build-tflite,build-edgetpu]
+    steps:
+      - uses: actions/download-artifact@main
+      - run: ls -l -R
+    

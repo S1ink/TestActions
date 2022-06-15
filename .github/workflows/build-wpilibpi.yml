@@ -12,7 +12,7 @@ jobs:
         with:
           repository: wpilibsuite/WPILibPi
           ref: ${{ steps.tag.outputs.tag }}
-      - run: docker build --build-arg BASE_IMAGE=debian:buster -t pi-gen "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-      - run: docker run --rm --privilaged pi-gen base -e -o pipefail -c "./stage3/01-sys-tweaks/01-run.sh && ls -l"
+      - run: ./docker-build.sh
       - run: ls -l
+      - run: ls -l -R
       

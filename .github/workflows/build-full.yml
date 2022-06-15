@@ -60,40 +60,51 @@ jobs:
     needs: get-latest-release
     steps:
       - run: echo '::echo::on'
+
       - name: Checkout Libedgetpu
         uses: actions/checkout@main
         with:
           repository: google-coral/libedgetpu
+
       - name: Configure Build
         run: |
           sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = "${{ needs.get-latest-release.outputs.commit }}"/' ./workspace.bzl
           sed -i 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = "${{ needs.get-latest-release.outputs.sha256 }}"/' ./workspace.bzl
+          sed -i 's/$(STRIPPED_SUFFIX)//' ./Makefile
           cat ./workspace.bzl
+          cat ./Makefile
           mkdir artifacts
-      - name: Build Docker Image
-        run: DOCKER_IMAGE="debian:stretch" make docker-image
-        
-      - name: Build Direct
-        run: DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-direct make docker-build
-          
-      - name: Copy Direct
-        run: |
-          cp out/direct/armv7a/libedgetpu.so.1.0 artifacts/direct-stripped-libedgetpu.so
-          cp /home/runner/.cache/bazel/_bazel_runner/eab0d61a99b6696edb3d2aff87b585e8/execroot/libedgetpu/bazel-out/armv7a-opt/bin/tflite/public/libedgetpu_direct_all.so artifacts/direct-libedgetpu.so
-
-      - name: Build Throttled
-        if: always()
-        run: DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-throttled make docker-build
-          
-      - name: Copy Throttled
-        if: always()
-        run: |
-          cp out/throttled/armv7a/libedgetpu.so.1.0 artifacts/throttled-stripped-libedgetpu.so
-          cp /home/runner/.cache/bazel/_bazel_runner/eab0d61a99b6696edb3d2aff87b585e8/execroot/libedgetpu/bazel-out/armv7a-opt/bin/tflite/public/libedgetpu_direct_all.so artifacts/throttled-libedgetpu.so
       
-      - name: Copy Headers
-        if: always()
-        run: cp tflite/public/edgetpu.h artifacts
+      - name: Build
+        run: |
+         DOCKER_CPUS="armv7a" DOCKER_IMAGE="debian:stretch" DOCKER_TARGETS=libedgetpu make docker-build
+         cp out/direct/armv7a/libedgetpu.so.1.0 artifacts/direct/libedgetpu.so
+         cp out/throttled/armv7a/libedgetpu.so.1.0 artifacts/throttled/libedgetpu.so
+         cp tflite/public/edgetpu.h artifacts
+
+
+#       - name: Build Docker Image
+#         run: DOCKER_IMAGE="debian:stretch" make docker-image
+        
+#       - name: Build Direct
+#         run: DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-direct make docker-build
+          
+#       - name: Copy Direct
+#         run: |
+#           cp out/direct/armv7a/libedgetpu.so.1.0 artifacts/direct/libedgetpu.so
+
+#       - name: Build Throttled
+#         if: always()
+#         run: DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-throttled make docker-build
+          
+#       - name: Copy Throttled
+#         if: always()
+#         run: |
+#           cp out/throttled/armv7a/libedgetpu.so.1.0 artifacts/throttled/libedgetpu.so
+      
+#       - name: Copy Headers
+#         if: always()
+#         run: cp tflite/public/edgetpu.h artifacts
 
       - name: Upload Artifacts
         if: always()

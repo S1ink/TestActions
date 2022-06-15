@@ -17,7 +17,7 @@ jobs:
         run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/tensorflow/tensorflow/releases/latest | jq '.tag_name' | sed 's/\"//g')"
       - name: Get latest TF commit
         id: tf-latest-commit
-        run: echo "::set-output name=commit::$(git ls-remote https://github.com/tensorflow/tensorflow/refs/tags/${{ steps.tf-latest-tag.outputs.tag }} | awk '{print $1}')"
+        run: echo "::set-output name=commit::$(git ls-remote https://github.com/tensorflow/tensorflow refs/tags/${{ steps.tf-latest-tag.outputs.tag }} | awk '{print $1}')"
       - name: Get latest TF hash code
         id: tf-latest-hash
         run: echo "::set-output name=sha256::$(curl -L "https://github.com/tensorflow/tensorflow/archive/${{ steps.tf-latest-commit.outputs.commit }}.tar.gz" | sha256sum | awk '{print $1}')"
@@ -68,7 +68,7 @@ jobs:
       - name: Build and Copy
         run: |
          arm-linux-gnueabihf-gcc --version
-         CROSS_PREFIX=arm-linux-gnueabihf- make lib
+         make lib CROSS_PREFIX=arm-linux-gnueabihf-
          mkdir artifacts
          cp libpigpio.so artifacts
          cp pigpio.h artifacts

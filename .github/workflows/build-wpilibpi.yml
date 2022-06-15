@@ -12,7 +12,7 @@ jobs:
         with:
           repository: wpilibsuite/WPILibPi
           ref: ${{ steps.tag.outputs.tag }}
-      - run: ./docker-build.sh
+      - run: ./build-docker.sh
       - run: ls -l
       - run: ls -l -R
       

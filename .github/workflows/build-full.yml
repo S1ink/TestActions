@@ -17,10 +17,10 @@ jobs:
         run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/tensorflow/tensorflow/releases/latest | jq '.tag_name' | sed 's/\"//g')"
       - name: Get latest TF commit
         id: tf-latest-commit
-        run: echo "::set-output name=commit::$(git ls-remote https://github.com/tensorflow/tensorflow refs/tags/${{ steps.latest-tag.outputs.tag }} | awk '{print $1}')"
+        run: echo "::set-output name=commit::$(git ls-remote https://github.com/tensorflow/tensorflow/refs/tags/${{ steps.tf-latest-tag.outputs.tag }} | awk '{print $1}')"
       - name: Get latest TF hash code
         id: tf-latest-hash
-        run: echo "::set-output name=sha256::$(curl -L "https://github.com/tensorflow/tensorflow/archive/${{ steps.latest-commit.outputs.commit }}.tar.gz" | sha256sum | awk '{print $1}')"
+        run: echo "::set-output name=sha256::$(curl -L "https://github.com/tensorflow/tensorflow/archive/${{ steps.tf-latest-commit.outputs.commit }}.tar.gz" | sha256sum | awk '{print $1}')"
       - name: Get latest WPILibPi tag
         id: wpilibpi-latest-tag
         run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/wpilibsuite/WPILibPi/releases/latest | jq '.tag_name' | sed 's/\"//g')"
@@ -29,9 +29,9 @@ jobs:
         run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/joan2937/pigpio/releases/latest | jq '.tag_name' | sed 's/\"//g')"
       - name: Confirm Info
         run: |
-          echo ${{ steps.latest-tag.outputs.tag }}
-          echo ${{ steps.latest-commit.outputs.commit }}
-          echo ${{ steps.latest-hash.outputs.sha256 }}
+          echo ${{ steps.tf-latest-tag.outputs.tag }}
+          echo ${{ steps.tf-latest-commit.outputs.commit }}
+          echo ${{ steps.tf-latest-hash.outputs.sha256 }}
           echo ${{ steps.wpilibpi-latest-tag.outputs.tag }}
           echo ${{ steps.pigpio-latest-tag.outputs.tag }}
   
@@ -42,7 +42,7 @@ jobs:
       - run: echo '::echo::on'
       - name: Extract Latest WPILibPi
         run: |
-          wget https://github.com/wpilibsuite/WPILibPi/releases/${{ needs.get-latest-releases.outputs.wpilibpi-tag }}/download/cpp-multiCameraServer.zip
+          wget https://github.com/wpilibsuite/WPILibPi/releases/download/${{ needs.get-latest-releases.outputs.wpilibpi-tag }}/cpp-multiCameraServer.zip
           apt-get install unzip
           mkdir {out,artifacts}
           unzip cpp-multiCameraServer.zip out
@@ -67,7 +67,7 @@ jobs:
         run: sudo apt-get install gcc-arm-linux-gnueabihf
       - name: Build and Copy
         run: |
-         whereis gcc-arm-linux-gnueabihf
+         gcc-arm-linux-gnueabihf-gcc --version
          CROSS_PREFIX=gcc-arm-linux-gnueabihf- make lib
          mkdir artifacts
          cp libpigpio.so artifacts

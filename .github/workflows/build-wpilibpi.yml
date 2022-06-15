@@ -5,11 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo '::echo::on'
+      - id: tag
+        run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/wpilibsuite/WPILibPi/releases/latest | jq '.tag_name' | sed 's/\"//g')"
       - name: Checkout WPILibPi
         uses: actions/checkout@main
         with:
           repository: wpilibsuite/WPILibPi
-          ref: $(curl -s https://api.github.com/repos/wpilibsuite/WPILibPi/releases/latest | jq '.tag_name' | sed 's/\"//g')
+          ref: ${{ steps.tag.outputs.tag }}
       - run: apt-get install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
           dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
           xxd build-essential cmake python3 python3-distutils ant sudo openjdk-11-jdk

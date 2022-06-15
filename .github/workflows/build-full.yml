@@ -42,7 +42,7 @@ jobs:
       - run: echo '::echo::on'
       - name: Extract Latest WPILibPi
         run: |
-          wget https://github.com/wpilibsuite/WPILibPi/releases/${{ needs.get-latest-releases.outputs.wpilibpi-tag }}/downloads/cpp-multiCameraServer.zip
+          wget https://github.com/wpilibsuite/WPILibPi/releases/${{ needs.get-latest-releases.outputs.wpilibpi-tag }}/download/cpp-multiCameraServer.zip
           apt-get install unzip
           mkdir {out,artifacts}
           unzip cpp-multiCameraServer.zip out
@@ -67,7 +67,8 @@ jobs:
         run: sudo apt-get install gcc-arm-linux-gnueabihf
       - name: Build and Copy
         run: |
-         CROSS_PREFIX="gcc-arm-linuz-gnueabihf-" make lib
+         whereis gcc-arm-linux-gnueabihf
+         CROSS_PREFIX=gcc-arm-linux-gnueabihf- make lib
          mkdir artifacts
          cp libpigpio.so artifacts
          cp pigpio.h artifacts
@@ -86,7 +87,7 @@ jobs:
         uses: actions/checkout@main
         with:
           repository: tensorflow/tensorflow
-          ref: ${{ needs.get-latest-release.outputs.tf-tag }}
+          ref: ${{ needs.get-latest-releases.outputs.tf-tag }}
       - name: Get Deps
         run: |
           npm install @bazel/bazelisk
@@ -120,8 +121,8 @@ jobs:
 
       - name: Configure Build
         run: |
-          sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = "${{ needs.get-latest-release.outputs.tf-commit }}"/' ./workspace.bzl
-          sed -i 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = "${{ needs.get-latest-release.outputs.tf-sha256 }}"/' ./workspace.bzl
+          sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = "${{ needs.get-latest-releases.outputs.tf-commit }}"/' ./workspace.bzl
+          sed -i 's/TENSORFLOW_SHA256 = ".*/TENSORFLOW_SHA256 = "${{ needs.get-latest-releases.outputs.tf-sha256 }}"/' ./workspace.bzl
           sed -i 's/$(STRIPPED_SUFFIX)//' ./Makefile
           cat ./workspace.bzl
           cat ./Makefile

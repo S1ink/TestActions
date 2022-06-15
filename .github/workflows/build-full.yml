@@ -73,7 +73,7 @@ jobs:
           sed -i 's/$(STRIPPED_SUFFIX)//' ./Makefile
           cat ./workspace.bzl
           cat ./Makefile
-          mkdir artifacts
+          mkdir -p artifacts/{direct,throttled}
       
       - name: Build
         run: |
@@ -82,32 +82,7 @@ jobs:
          cp out/throttled/armv7a/libedgetpu.so.1.0 artifacts/throttled/libedgetpu.so
          cp tflite/public/edgetpu.h artifacts
 
-
-#       - name: Build Docker Image
-#         run: DOCKER_IMAGE="debian:stretch" make docker-image
-        
-#       - name: Build Direct
-#         run: DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-direct make docker-build
-          
-#       - name: Copy Direct
-#         run: |
-#           cp out/direct/armv7a/libedgetpu.so.1.0 artifacts/direct/libedgetpu.so
-
-#       - name: Build Throttled
-#         if: always()
-#         run: DOCKER_CPUS="armv7a" DOCKER_TARGETS=libedgetpu-throttled make docker-build
-          
-#       - name: Copy Throttled
-#         if: always()
-#         run: |
-#           cp out/throttled/armv7a/libedgetpu.so.1.0 artifacts/throttled/libedgetpu.so
-      
-#       - name: Copy Headers
-#         if: always()
-#         run: cp tflite/public/edgetpu.h artifacts
-
       - name: Upload Artifacts
-        if: always()
         uses: actions/upload-artifact@main
         with:
           name: build-edgetpu

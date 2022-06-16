@@ -1,4 +1,4 @@
-name: Build Deps
+name: VisionServer Dependencies
 on: workflow_dispatch
 jobs:
  
@@ -8,8 +8,8 @@ jobs:
       tf-tag: ${{ steps.tf-latest-tag.outputs.tag }}
       tf-commit: ${{ steps.tf-latest-commit.outputs.commit }}
       tf-sha256: ${{ steps.tf-latest-hash.outputs.sha256 }}
-      wpilibpi-tag: ${{ steps.wpilibpi-latest-tag.outputs.tag }}
-      pigpio-tag: ${{ steps.pigpio-latest-tag.outputs.tag }}
+#       wpilibpi-tag: ${{ steps.wpilibpi-latest-tag.outputs.tag }}
+#       pigpio-tag: ${{ steps.pigpio-latest-tag.outputs.tag }}
     steps:
       - run: echo '::echo::on'
       - name: Get latest TF release tag
@@ -21,12 +21,12 @@ jobs:
       - name: Get latest TF hash code
         id: tf-latest-hash
         run: echo "::set-output name=sha256::$(curl -L "https://github.com/tensorflow/tensorflow/archive/${{ steps.tf-latest-commit.outputs.commit }}.tar.gz" | sha256sum | awk '{print $1}')"
-      - name: Get latest WPILibPi tag
-        id: wpilibpi-latest-tag
-        run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/wpilibsuite/WPILibPi/releases/latest | jq '.tag_name' | sed 's/\"//g')"
-      - name: Get latest WPILibPi tag
-        id: pigpio-latest-tag
-        run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/joan2937/pigpio/releases/latest | jq '.tag_name' | sed 's/\"//g')"
+#       - name: Get latest WPILibPi tag
+#         id: wpilibpi-latest-tag
+#         run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/wpilibsuite/WPILibPi/releases/latest | jq '.tag_name' | sed 's/\"//g')"
+#       - name: Get latest pigpio tag
+#         id: pigpio-latest-tag
+#         run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/joan2937/pigpio/releases/latest | jq '.tag_name' | sed 's/\"//g')"
       - name: Confirm Info
         run: |
           echo ${{ steps.tf-latest-tag.outputs.tag }}
@@ -37,32 +37,37 @@ jobs:
   
   extract-wpilibpi:
     runs-on: ubuntu-latest
-    needs: get-latest-releases
+#    needs: get-latest-releases
     steps:
       - run: echo '::echo::on'
+      - name: Get latest WPILibPi release tag
+        id: wpilibpi-latest-tag
+        run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/wpilibsuite/WPILibPi/releases/latest | jq '.tag_name' | sed 's/\"//g')"
       - name: Extract Latest WPILibPi
         run: |
-          wget https://github.com/wpilibsuite/WPILibPi/releases/download/${{ needs.get-latest-releases.outputs.wpilibpi-tag }}/cpp-multiCameraServer.zip
+          wget https://github.com/wpilibsuite/WPILibPi/releases/download/${{ steps.wpilibpi-latest-tag.outputs.tag }}/cpp-multiCameraServer.zip
           sudo apt-get install unzip
           mkdir {out,artifacts}
           unzip cpp-multiCameraServer.zip  -d out
-          cp -R out/cpp-multiCameraServer/lib artifacts
-          cp -R out/cpp-multiCameraServer/include artifacts
+          cp -R out/cpp-multiCameraServer/{lib,include} artifacts
       - uses: actions/upload-artifact@main
         with:
-          name: extract-wpilib
+          name: extract-wpilibpi
           path: artifacts
   
   build-pigpio:
     runs-on: ubuntu-latest
-    needs: get-latest-releases
+#    needs: get-latest-releases
     steps:
       - run: echo '::echo::on'
+      - name: Get latest pigpio release tag
+        id: pigpio-latest-tag
+        run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/joan2937/pigpio/releases/latest | jq '.tag_name' | sed 's/\"//g')"
       - name: Checkout Pigpio
         uses: actions/checkout@main
         with:
           repository: joan2937/pigpio
-          ref: ${{ needs.get-latest-releases.outputs.pigpio-tag }}
+          ref: ${{ steps.pigpio-latest-tag.outputs.tag }}
       - name: Get Cross Compiler
         run: sudo apt-get install gcc-arm-linux-gnueabihf
       - name: Build and Copy
@@ -140,10 +145,29 @@ jobs:
         with:
           name: build-edgetpu
           path: artifacts
-  compile:
+
+  combine:
     runs-on: ubuntu-latest
     needs: [extract-wpilibpi,build-pigpio,build-tflite,build-edgetpu]
     steps:
       - uses: actions/download-artifact@main
-      - run: ls -l -R
+      - run: |
+          ls -l
+          mkdir output
+          cp -R extract-wpilibpi/{include,lib} output
+          cp build-pigpio/pigpio.h output/include
+          cp build-pigpio/libpigpio.so output/lib
+          cp build-edgetpu/edgetpu.h output/include
+          mkdir output/lib/edgetpu
+          cp -R build-edgetpu/{direct,throttled} output/lib/edgetpu
+          cp build-edgetpu/direct/libedgetpu.so output/lib
+          cp build-tflite/libtensorflowlite.so output/lib
+          cp -R build-tflite/tensorflow output/include
+          cd output
+          ls -l -R
+          cd $GITHUB_WORKSPACE
+      - uses: actions/upload-artifact@main
+        with:
+          name: output-combined
+          path: output
     

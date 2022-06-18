@@ -102,18 +102,18 @@ jobs:
         run: |
           mkdir {absl,flatbuffers}
           wget -O absl.tar.gz https://github.com/abseil/abseil-cpp/archive/$(grep 'ABSL_COMMIT = ".*"' third_party/absl/workspace.bzl | cut -d \" -f2).tar.gz
-          tar -xzf absl.tar.gz -C absl
+          tar -xzf absl.tar.gz -C absl --strip-components=1
           wget -O flatbuffers.tar.gz $(grep 'urls = tf_mirror_urls(".*"' third_party/flatbuffers/workspace.bzl | cut -d \" -f2)
-          tar -xzf flatbuffers.tar.gz -C flatbuffers
+          tar -xzf flatbuffers.tar.gz -C flatbuffers --strip-components=1
+          ls -l -R
       - name: Build
         run: |
           bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
-          ls -l -R
       - name: Copy Artifacts
         run: |
           mkdir artifacts
           find ./tensorflow -name '*.h' | cpio -pdm ./artifacts
-          find ./absl -name '*.h' | cpio -pdm ./artifacts
+          find ./absl/absl -name '*.h' | cpio -pdm ./artifacts
           cp -R ./flatbuffers/include/flatbuffers ./artifacts
           cp bazel-bin/tensorflow/lite/libtensorflowlite.so artifacts
       - name: Upload Artifacts

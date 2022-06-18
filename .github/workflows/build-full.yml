@@ -100,7 +100,9 @@ jobs:
           pip install numpy
       - name: Get Flatbuffers and Abseil
         run: |
+          ls -l
           cd tensorflow
+          ls -l
           mkdir {absl,flatbuffers}
           wget -O absl.tar.gz https://github.com/abseil/abseil-cpp/archive/$(grep 'ABSL_COMMIT = ".*"' third_party/absl/workspace.bzl | cut -d \" -f2).tar.gz
           tar -xzf absl.zip -C absl

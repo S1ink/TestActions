@@ -102,7 +102,7 @@ jobs:
         run: |
           mkdir {absl,flatbuffers}
           wget -O absl.tar.gz https://github.com/abseil/abseil-cpp/archive/$(grep 'ABSL_COMMIT = ".*"' third_party/absl/workspace.bzl | cut -d \" -f2).tar.gz
-          tar -xzf absl.zip -C absl
+          tar -xzf absl.tar.gz -C absl
           wget -O flatbuffers.tar.gz $(grep 'urls = tf_mirror_urls(".*"' third_party/flatbuffers/workspace.bzl | cut -d \" -f2)
           tar -xzf flatbuffers.tar.gz -C flatbuffers
       - name: Build

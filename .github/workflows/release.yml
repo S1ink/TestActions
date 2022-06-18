@@ -1,0 +1,21 @@
+name: Release Manager
+on:
+  push:
+    tags:
+      - "v*"
+jobs:
+  release-manager:
+    name: Release Manager
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+        with:
+          submodules: recursive
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          title: Test release
+          files: |
+            lib/libtensorflowlite.so
+            lib/libedgetpu.so

@@ -182,7 +182,7 @@ jobs:
           submodules: recursive
       - run: |
           cp -R output/{include,lib} main
-      - uses: actions/peter-evans/create-pull-request@main
+      - uses: peter-evans/create-pull-request@main
         with:
           path: main
           branch: update-files

@@ -48,9 +48,10 @@ jobs:
           wget https://github.com/wpilibsuite/WPILibPi/releases/download/${{ steps.wpilibpi-latest-tag.outputs.tag }}/cpp-multiCameraServer.zip
           sudo apt-get install unzip
           mkdir {out,artifacts}
-          unzip cpp-multiCameraServer.zip  -d out
+          unzip cpp-multiCameraServer.zip -d out
           cp -R out/cpp-multiCameraServer/{lib,include} artifacts
-      - uses: actions/upload-artifact@main
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@main
         with:
           name: extract-wpilibpi
           path: artifacts
@@ -100,12 +101,22 @@ jobs:
       - name: Build
         run: |
           cd tensorflow
-          ls -l
           bazel build --config=elinux_armhf -c opt //tensorflow/lite:libtensorflowlite.so
-      - name: Copy Artifact
+          ls -l -r
+      - name: Get Flatbuffers and Abseil
+        run: |
+          cd $GITHUB_WORKSPACE/tensorflow
+          mkdir {absl,flatbuffers}
+          wget -O absl.tar.gz https://github.com/abseil/abseil-cpp/archive/$(grep 'ABSL_COMMIT = ".*"' third_party/absl/workspace.bzl | cut -d \" -f2).tar.gz
+          tar -xzf absl.zip -C absl
+          wget -O flatbuffers.tar.gz $(grep 'urls = tf_mirror_urls(".*"' third_party/flatbuffers/workspace.bzl | cut -d \" -f2)
+          tar -xzf flatbuffers.tar.gz -C flatbuffers
+      - name: Copy Artifacts
         run: |
           mkdir artifacts
           find ./tensorflow -name '*.h' | cpio -pdm ./artifacts
+          find ./absl -name '*.h' | cpio -pdm ./artifacts
+          cp -R ./flatbuffers/include/flatbuffers ./artifacts
           cp bazel-bin/tensorflow/lite/libtensorflowlite.so artifacts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -118,12 +129,10 @@ jobs:
     needs: get-latest-releases
     steps:
       - run: echo '::echo::on'
-
       - name: Checkout Libedgetpu
         uses: actions/checkout@main
         with:
           repository: google-coral/libedgetpu
-
       - name: Configure Build
         run: |
           sed -i 's/TENSORFLOW_COMMIT = ".*/TENSORFLOW_COMMIT = "${{ needs.get-latest-releases.outputs.tf-commit }}"/' ./workspace.bzl
@@ -132,14 +141,12 @@ jobs:
           cat ./workspace.bzl
           cat ./Makefile
           mkdir -p artifacts/{direct,throttled}
-      
       - name: Build
         run: |
          DOCKER_CPUS="armv7a" DOCKER_IMAGE="debian:stretch" DOCKER_TARGETS=libedgetpu make docker-build
          cp out/direct/armv7a/libedgetpu.so.1.0 artifacts/direct/libedgetpu.so
          cp out/throttled/armv7a/libedgetpu.so.1.0 artifacts/throttled/libedgetpu.so
          cp tflite/public/edgetpu.h artifacts
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@main
         with:
@@ -163,6 +170,8 @@ jobs:
           cp build-edgetpu/direct/libedgetpu.so output/lib
           cp build-tflite/libtensorflowlite.so output/lib
           cp -R build-tflite/tensorflow output/include
+          cp -R build-tflite/absl output/include
+          cp -R build-tflite/flatbuffers output/include
           cd output
           ls -l -R
           cd $GITHUB_WORKSPACE

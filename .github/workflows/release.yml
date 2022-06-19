@@ -13,9 +13,9 @@ jobs:
           submodules: recursive
       - id: versions
         run: |
-          echo '::set-output name=major::$(echo ${{ github.ref }} | cut -d v -f2 | cut -d . -f1)'
-          echo '::set-output name=minor::$(echo ${{ github.ref }} | cut -d v -f2 | cut -d . -f2)'
-          echo '::set-output name=patch::$(echo ${{ github.ref }} | cut -d v -f2 | cut -d . -f3)'
+          echo "::set-output name=major::$(echo ${{ github.ref }} | cut -d v -f2 | cut -d . -f1)"
+          echo "::set-output name=minor::$(echo ${{ github.ref }} | cut -d v -f2 | cut -d . -f2)"
+          echo "::set-output name=patch::$(echo ${{ github.ref }} | cut -d v -f2 | cut -d . -f3)"
       - run: |
           sed -i 's/#define VS_VERSION_MAJOR.*/#define VS_VERSION_MAJOR\t${{ steps.versions.outputs.major }}/' version.h
           sed -i 's/#define VS_VERSION_MINOR.*/#define VS_VERSION_MAJOR\t${{ steps.versions.outputs.minor }}/' version.h

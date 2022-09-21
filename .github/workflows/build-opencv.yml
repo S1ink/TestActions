@@ -27,7 +27,7 @@ jobs:
           ref: ${{ steps.opencv-ver.outputs.version }}
       - run: |
           sudo apt-get install gcc-arm-linux-gnueabihf
-          cv $GITHUB_WORKSPACE
+          cd $GITHUB_WORKSPACE
           ls -l
           mkdir build
           cd build

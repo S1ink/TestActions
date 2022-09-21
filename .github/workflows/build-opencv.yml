@@ -17,20 +17,22 @@ jobs:
       - name: Get Version
         id: opencv-ver
         run: echo "::set-output name=version::$(echo 4.5.2)"  #get actual version, this is for simplicity
+      - run: mkdir {opencv, opencv-contrib, build}
       - uses: actions/checkout@main
         with:
           repository: opencv/opencv
           ref: ${{ steps.opencv-ver.outputs.version }}
+          path: opencv
       - uses: actions/checkout@main
         with:
           repository: opencv/opencv_contrib
           ref: ${{ steps.opencv-ver.outputs.version }}
+          path: opencv-contrib
       - run: |
           sudo apt-get install gcc-arm-linux-gnueabihf
           cd $GITHUB_WORKSPACE
           ls -l
-          mkdir build
           cd build
-          cmake "$GITHUB_WORKSPACE/opencv-${{ steps.opencv-ver.outputs.version }}" -DCMAKE_TOOLCHAIN_FILE="$GITHUB_WORKSPACE/opencv-${{ steps.opencv-ver.outputs.version }}/platforms/linux/arm-gnueabihf.toolchain.cmake" -DOPENCV_EXTRA_MODULES_PATH="$GITHUB_WORKSPACE/opencv-contrib-${{ steps.opencv-ver.outputs.version }}" 
+          cmake "$GITHUB_WORKSPACE/opencv/opencv-${{ steps.opencv-ver.outputs.version }}" -DCMAKE_TOOLCHAIN_FILE="$GITHUB_WORKSPACE/opencv/opencv-${{ steps.opencv-ver.outputs.version }}/platforms/linux/arm-gnueabi.toolchain.cmake" -DOPENCV_EXTRA_MODULES_PATH="$GITHUB_WORKSPACE/opencv-contrib/opencv-contrib-${{ steps.opencv-ver.outputs.version }}" 
           make
           ls -l -r

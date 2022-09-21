@@ -30,9 +30,9 @@ jobs:
       - run: |
           sudo apt-get install gcc-arm-linux-gnueabihf
           cd $GITHUB_WORKSPACE
-          ls -l
+          ls -l -r
           mkdir build
           cd build
-          cmake "$GITHUB_WORKSPACE/opencv/opencv-${{ steps.opencv-ver.outputs.version }}" -DCMAKE_TOOLCHAIN_FILE="$GITHUB_WORKSPACE/opencv/opencv-${{ steps.opencv-ver.outputs.version }}/platforms/linux/arm-gnueabi.toolchain.cmake" -DOPENCV_EXTRA_MODULES_PATH="$GITHUB_WORKSPACE/opencv-contrib/opencv-contrib-${{ steps.opencv-ver.outputs.version }}" 
+          cmake $GITHUB_WORKSPACE/opencv -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/opencv/platforms/linux/arm-gnueabi.toolchain.cmake -DOPENCV_EXTRA_MODULES_PATH=$GITHUB_WORKSPACE/opencv-contrib 
           make
           ls -l -r

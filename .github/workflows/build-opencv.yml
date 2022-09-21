@@ -1,0 +1,36 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build OpenCV
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-opencv:
+    name: Build OpenCV with Modules
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Version
+        id: opencv-ver
+        run: echo "::set-output name=version::$(echo 4.5.2)"  #get actual version, this is for simplicity
+      - uses: actions/checkout@main
+        with:
+          repository: opencv/opencv
+          ref: ${{ steps.opencv-ver.outputs.version }}
+      - uses: actions/checkout@main
+        with:
+          repository: opencv/opencv_contrib
+          ref: ${{ steps.opencv-ver.outputs.version }}
+      - run: |
+          sudo apt-get install gcc-arm-linux-gnueabihf
+          cv $GITHUB_WORKSPACE
+          ls -l
+          mkdir build
+          cd build
+          cmake "$GITHUB_WORKSPACE/opencv-${{ steps.opencv-ver.outputs.version }}" -DCMAKE_TOOLCHAIN_FILE="$GITHUB_WORKSPACE/opencv-${{ steps.opencv-ver.outputs.version }}/platforms/linux/arm-gnueabihf.toolchain.cmake" -DOPENCV_EXTRA_MODULES_PATH="$GITHUB_WORKSPACE/opencv-contrib-${{ steps.opencv-ver.outputs.version }}" 
+          make
+          ls -l -r

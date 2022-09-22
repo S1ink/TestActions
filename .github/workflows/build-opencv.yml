@@ -31,7 +31,7 @@ jobs:
           sudo apt-get install build-essential cmake pkg-config
           #sudo apt-get install gcc-arm-linux-gnueabihf
           sudo apt-get install gcc-8-arm-linux-gnueabi-base gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf
-          sudo apt-get install eigen
+          #sudo apt-get install eigen
           cd $GITHUB_WORKSPACE
           ls -l -r
           mkdir build

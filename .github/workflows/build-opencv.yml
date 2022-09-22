@@ -44,7 +44,8 @@ jobs:
           cd build
           cmake $GITHUB_WORKSPACE/opencv \
             -DGNU_MACHINE="arm-raspbian10-linux-gnueabi" \
-            -DCMAKE_C_COMPILER_WORKS=1 -DCMAKE_CXX_COMPILER_WORKS=1 \
+            #-DCMAKE_C_COMPILER_WORKS=1 -DCMAKE_CXX_COMPILER_WORKS=1 \
+            -DSOFTFP=NO \
             -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/opencv/platforms/linux/arm-gnueabi.toolchain.cmake \
             #-DGCC_COMPILER_VERSION=8 \
             -DOPENCV_EXTRA_MODULES_PATH=$GITHUB_WORKSPACE/opencv-contrib/modules/aruco \

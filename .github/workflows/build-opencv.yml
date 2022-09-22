@@ -40,6 +40,7 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/opencv/platforms/linux/arm-gnueabi.toolchain.cmake \
             -DGCC_COMPILER_VERSION=8 \
             -DOPENCV_EXTRA_MODULES_PATH=$GITHUB_WORKSPACE/opencv-contrib/modules/aruco \
+            -DBUILD_LIST="" \
             -DWITH_FFMPEG=OFF \
             -DBUILD_JPEG=ON \
             -DBUILD_TESTS=OFF \
@@ -57,7 +58,8 @@ jobs:
           make install
           ls -l -r
           sudo apt-get install zip
-          zip -r build.zip install
+          cd $GITHUB_WORKSPACE
+          zip -r build.zip build/install
       - uses: actions/upload-artifact@main
         with:
           name: build

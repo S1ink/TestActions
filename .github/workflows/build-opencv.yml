@@ -28,11 +28,35 @@ jobs:
           ref: ${{ steps.opencv-ver.outputs.version }}
           path: opencv-contrib
       - run: |
-          sudo apt-get install gcc-arm-linux-gnueabihf
+          sudo apt-get install build-essential cmake pkg-config
+          #sudo apt-get install gcc-arm-linux-gnueabihf
+          sudo apt-get install gcc-8-arm-linux-gnueabi-base gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf
+          sudo apt-get install eigen
           cd $GITHUB_WORKSPACE
           ls -l -r
           mkdir build
           cd build
-          cmake $GITHUB_WORKSPACE/opencv -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/opencv/platforms/linux/arm-gnueabi.toolchain.cmake -DOPENCV_EXTRA_MODULES_PATH=$GITHUB_WORKSPACE/opencv-contrib 
+          cmake $GITHUB_WORKSPACE/opencv \
+            -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/opencv/platforms/linux/arm-gnueabi.toolchain.cmake \
+            -DGCC_COMPILER_VERSION=8 \
+            -DOPENCV_EXTRA_MODULES_PATH=$GITHUB_WORKSPACE/opencv-contrib/modules/aruco \
+            -DWITH_FFMPEG=OFF \
+            -DBUILD_JPEG=ON \
+            -DBUILD_TESTS=OFF \
+            -DBUILD_JAVA=OFF \
+            -DBUILD_opencv_python3=OFF
+            -DENABLE_CXX11=ON \
+            -DBUILD_SHARED_LIBS=ON \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_MAKE_PROGRAM=make \
+            -DENABLE_NEON=ON \
+            -DENABLE_VFPV3=ON \
           make
           ls -l -r
+          sudo apt-get install zip
+          zip -r build.zip install
+      - uses: actions/upload-artifact@main
+        with:
+          name: build
+          path: build.zip
+          

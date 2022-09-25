@@ -1,0 +1,37 @@
+name: Build *Modified* WPILibPi Image
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '::echo::on'
+      
+      - id: wpilibpi-latest-tag
+        run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/wpilibsuite/WPILibPi/releases/latest | jq '.tag_name' | sed 's/\"//g')"
+      - id: wpilib-latest-tag
+        run: echo "::set-output name=tag::$(curl -s https://api.github.com/repos/wpilibsuite/allwpilib/releases/latest | jq '.tag_name' | sed 's/\"//g')"
+      
+      - name: Checkout WPILibPi
+        uses: actions/checkout@main
+        with:
+          repository: wpilibsuite/WPILibPi
+          ref: ${{ steps.wpilibpi-latest-tag.outputs.tag }}
+          path: wpilibpi
+          
+      - id: opencv-tag
+        run: echo "::set-output name=tag::$(grep 'https://github.com/opencv/opencv/archive/.*' wpilibpi/stage3/01-sys-tweaks/01-run.sh | cut -d '/' -f7 | cut -d '.' -f1-3)"
+      - run: echo ${{ steps.opencv-tag.outputs.tag }}
+      
+      - run: |
+          sed -i '/https://github.com/opencv/opencv/archive/.*/a \nwget -nc -nv -O opencv-contrib.tar-gz https://github.com/opencv/opencv_contrib/archive/${{ steps.opencv-tag.outputs.tag }}.tar.gz/' wpilibpi/stage3/01-sys-tweaks/01-run.sh
+          sed -i '/# opencv /a tar xzf "${DOWNLOAD_DIR}/opencv-contrib.tar.gz"/' wpilibpi/stage3/01-sys-tweaks/01-run.sh
+          sed -i '/cmake "${EXTRACT_DIR}/opencv- /a \t-DOPENCV_EXTRA_MODULES_PATH=${EXTRACT_DIR}/opencv_contrib-${{ steps.opencv-tag.outputs.tag }}/modules/aruco \/' wpilibpi/stage3/01-sys-tweaks/01-run.sh
+          cat wpilibpi/stage3/01-sys-tweaks/01-run.sh
+      
+      - run: ls -l -R
+      
+#       - run: ./build-docker.sh
+      
+#       - run: ls -l
+      
+#       - run: ls -l -R

@@ -6,4 +6,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "this/is/a/test" | sed -e 's!this/is/a/test!&\nthis/is/another/test!'
+        echo "tar xzf "${DOWNLOAD_DIR}/4.5.2.tar.gz"" | sed -e 's!tar xzf "${DOWNLOAD_DIR}/4.5.2.tar.gz"!&\ntar xzf "${DOWNLOAD_DIR}/opencv-contrib.tar.gz"!'

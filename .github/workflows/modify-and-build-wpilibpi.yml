@@ -22,9 +22,9 @@ jobs:
         run: echo "::set-output name=tag::$(grep 'https://github.com/opencv/opencv/archive/.*' wpilibpi/stage3/01-sys-tweaks/01-run.sh | cut -d '/' -f7 | cut -d '.' -f1-3)"
       - run: echo ${{ steps.opencv-tag.outputs.tag }}
       
-      - run: cat wpilibpi/stage3/01-sys-tweaks/01-run.sh | sed -e '/^.*https:\/\/github.com\/opencv\/opencv\/archive\/4.5.2.tar.gz /a \nwget -nc -nv -O opencv-contrib.tar-gz https:\/\/github.com\/opencv\/opencv_contrib\/archive\/${{ steps.opencv-tag.outputs.tag }}.tar.gz'
-      - run: sed -i '/# opencv /a tar xzf "${DOWNLOAD_DIR}/opencv-contrib.tar.gz"' wpilibpi/stage3/01-sys-tweaks/01-run.sh
-      - run: sed -i '/cmake "${EXTRACT_DIR}/opencv- /a \t-DOPENCV_EXTRA_MODULES_PATH=${EXTRACT_DIR}/opencv_contrib-${{ steps.opencv-tag.outputs.tag }}/modules/aruco \' wpilibpi/stage3/01-sys-tweaks/01-run.sh
+      - run: sed -e '/^.*https:\/\/github.com\/opencv\/opencv\/archive\/4.5.2.tar.gz /a \nwget -nc -nv -O opencv-contrib.tar-gz https:\/\/github.com\/opencv\/opencv_contrib\/archive\/${{ steps.opencv-tag.outputs.tag }}.tar.gz' cat wpilibpi/stage3/01-sys-tweaks/01-run.sh
+      - run: sed -e '/# opencv /a tar xzf "${DOWNLOAD_DIR}\/opencv-contrib.tar.gz"' wpilibpi/stage3/01-sys-tweaks/01-run.sh
+      - run: sed -e '/cmake "${EXTRACT_DIR}\/opencv- /a \t-DOPENCV_EXTRA_MODULES_PATH=${EXTRACT_DIR}\/opencv_contrib-${{ steps.opencv-tag.outputs.tag }}\/modules\/aruco \' wpilibpi/stage3/01-sys-tweaks/01-run.sh
       - run: cat wpilibpi/stage3/01-sys-tweaks/01-run.sh
       
       - run: ls -l -R

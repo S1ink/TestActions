@@ -1,0 +1,9 @@
+on:
+  workflow_dispatch:
+  
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "this/is/a/test" | sed -e 's!this/is/a/test!&\nthis/is/another/test!'

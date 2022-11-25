@@ -6,5 +6,5 @@ jobs:
       - run: echo '::echo::on'
       - uses: actions/checkout@main
       - run: |
-          docker build
+           docker build - < Dockerfile
           docker run --privilaged bash -e -o pipefail -c "./run.sh"

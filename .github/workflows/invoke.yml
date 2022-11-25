@@ -10,6 +10,6 @@ jobs:
           echo $GITHUB_WORKSPACE
           sudo touch /etc/ld.so.conf.d/toolchain.conf
           echo "$GITHUB_WORKSPACE/raspi-bullseye/arm-linux-gnueabihf/sysroot/lib" | sudo tee -a /etc/ld.so.conf.d/toolchain.conf
-          cat /etc/ld.so.conf
+          ldconfig
           ldconfig -v | less
           LD_LIBRARY_PATH=$GITHUB_WORKSPACE/raspi-bullseye/arm-linux-gnueabihf/sysroot/lib ./raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++ --version

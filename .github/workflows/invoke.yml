@@ -8,8 +8,7 @@ jobs:
           wget -nc -nv https://github.com/wpilibsuite/opensdk/releases/download/v2023-4/armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
           tar xzf armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
           echo $GITHUB_WORKSPACE
-          sudo touch /etc/ld.so.conf.d/toolchain.conf
-          echo "$GITHUB_WORKSPACE/raspi-bullseye/arm-linux-gnueabihf/sysroot/lib" | sudo tee -a /etc/ld.so.conf.d/toolchain.conf
-          sudo ldconfig
-          ldconfig -v | less
+          g++ --version
+          sudo apt install build-essential
+          sudo apt -y install g++-10
           LD_LIBRARY_PATH=$GITHUB_WORKSPACE/raspi-bullseye/arm-linux-gnueabihf/sysroot/lib ./raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++ --version

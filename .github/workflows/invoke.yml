@@ -7,4 +7,4 @@ jobs:
       - uses: actions/checkout@main
       - run: |
           docker build - < Dockerfile
-          docker run --privilaged bash -e -o pipefail -c "./run.sh"
+          docker run bash -e -o pipefail -c "./run.sh"

@@ -4,4 +4,4 @@ ENV DEBIAN_FRONTEND noninteractive
 
 COPY . /work/
 
-CMD [ "/bin/bash", "-c", "/work/run.sh" ]
+#CMD [ "/bin/bash", "-c", "/work/run.sh" ]

@@ -8,4 +8,4 @@ jobs:
       - run: |
           docker build - < Dockerfile
           ls -l
-          docker run bash -e -o pipefail -c "./run.sh"
+          docker run bash -e -o pipefail -c "/root/run.sh"

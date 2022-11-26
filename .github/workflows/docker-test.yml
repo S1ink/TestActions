@@ -9,6 +9,6 @@ jobs:
       - uses: actions/checkout@main
       - run: |
           sudo chmod +x {./container.sh,./run.sh}
-          sudo ./run.sh
+          sudo ./container.sh
       - if: always()
         run: ls -l -R

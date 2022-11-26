@@ -2,7 +2,7 @@ name: Build WPILibPi libs
 on: workflow_dispatch
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - run: echo '::echo::on'
       - id: tag
@@ -10,9 +10,13 @@ jobs:
       - name: Checkout WPILibPi
         uses: actions/checkout@main
         with:
-          repository: wpilibsuite/WPILibPi
-          ref: ${{ steps.tag.outputs.tag }}
-      - run: ./build-docker.sh
+          repository: RPi-Distro/pi-gen
+#          ref: ${{ steps.tag.outputs.tag }}
+      - run: |
+          echo "IMG_NAME='Raspbian_test'" > config
+          touch ./stage3/SKIP ./stage4/SKIP ./stage5/SKIP
+          touch ./stage4/SKIP_IMAGES ./stage5/SKIP_IMAGES
+          ./build-docker.sh
       - run: ls -l
       - run: ls -l -R
       

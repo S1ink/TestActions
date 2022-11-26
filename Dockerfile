@@ -13,6 +13,6 @@ RUN apt-get -y update && \
         build-essential cmake python3 python3-distutils python3-jinja2 ant sudo openjdk-11-jdk \
     && rm -rf /var/lib/apt/lists/*
 
-COPY . /pi-gen/
+COPY . /test-tmp/
 
 VOLUME [ "/pi-gen/work", "/pi-gen/deploy"]

@@ -1,4 +1,5 @@
 ARG BASE_IMAGE=i386/debian:buster
+ARG GEN_IMAGE=wpilib/pi-gen:latest
 FROM ${BASE_IMAGE}
 
 ENV DEBIAN_FRONTEND noninteractive

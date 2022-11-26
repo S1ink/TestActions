@@ -12,8 +12,9 @@ if ! ${DOCKER} ps >/dev/null; then
 fi
 CONTAINER_NAME=${CONTAINER_NAME:-test_deb}
 
-${DOCKER} build -t test-deb "${DIR}"
-${DOCKER} run --privilaged --cap-add=MKNOD test-deb bash -e -o pipefail -c "cd / && ls -l -R"
+#${DOCKER} build -t test-deb "${DIR}"
+${DOCKER} pull wpilib/pi-gen:latest
+${DOCKER} run pi-gen --privileged --cap-add=MKNOD bash -e -o pipefail -c "cd / && ls -l -R"
 
 # apt update
 # apt install -y wget xz-utils bzip2 make autoconf gcc-multilib g++-multilib

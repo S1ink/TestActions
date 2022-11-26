@@ -8,6 +8,7 @@ jobs:
       - run: echo '::echo::on'
       - uses: actions/checkout@main
       - run: |
+          sudo chmod +x ./run.sh
           sudo ./run.sh
       - if: always()
         run: ls -l -R

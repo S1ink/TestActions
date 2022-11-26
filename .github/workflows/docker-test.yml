@@ -11,7 +11,7 @@ jobs:
           wget -nc -nv https://github.com/wpilibsuite/opensdk/releases/download/v2023-4/armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
           tar xzf ./armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
           export PATH=/test-tmp/raspi-bullseye/bin:${PATH}
-          ldd armv6-bullseye-linux-gnueabihf-g++
+          ldd /test-tmp/raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++
           armv6-bullseye-linux-gnueabihf-g++ --version
       - run: |
           sudo chmod +x {./container.sh,./run.sh}

@@ -8,7 +8,7 @@ jobs:
       - run: echo '::echo::on'
       - uses: actions/checkout@main
       - run: |
-          cd /lib; ls -l -R
+          cd /lib/x86_64-linux-gnu; ls -l
           cd $GITHUB_WORKSPACE
           sudo chmod +x {./container.sh,./run.sh}
           sudo ./container.sh

@@ -14,7 +14,11 @@ CONTAINER_NAME=${CONTAINER_NAME:-test_deb}
 
 ${DOCKER} build -t test-deb "${DIR}"
 #${DOCKER} pull wpilib/pi-gen:latest
-${DOCKER} run --privileged --cap-add=MKNOD test-deb --volume /usr/lib:/test-tmp/lib-deps:ro bash -e -o pipefail -c "cd /test-tmp; ./run.sh"
+${DOCKER} run \
+	--privileged --cap-add=MKNOD \
+	--volume /lib/x86_64-linux-gnu:/test-tmp/lib-deps:ro \
+	test-deb \
+	bash -e -o pipefail -c "cd /test-tmp/lib-deps; ls -l && cd /test-tmp; ./run.sh"
 
 # apt update
 # apt install -y wget xz-utils bzip2 make autoconf gcc-multilib g++-multilib

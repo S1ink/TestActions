@@ -1,0 +1,12 @@
+name: Test ModBuild Docker
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: echo '::echo::on'
+      - uses: actions/checkout@main
+      - run: |
+          sudo docker build -t test "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+          sudo docker run --privilaged --cap-add=MKNOD test bash -e -o pipefail -c "cd / && ls -l -R"

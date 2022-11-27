@@ -8,6 +8,10 @@ jobs:
       - run: echo '::echo::on'
       - uses: actions/checkout@main
       - run: |
+          cd /; ls -l
+          echo "*********************************"
+          cd /; ls -l -R
+      - run: |
           wget -nc -nv https://github.com/wpilibsuite/opensdk/releases/download/v2023-4/armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
           tar xzf ./armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
           export PATH=$GITHUB_WORKSPACE/raspi-bullseye/bin:${PATH}
@@ -16,5 +20,5 @@ jobs:
       - run: |
           sudo chmod +x {./container.sh,./run.sh}
           sudo ./container.sh
-      - if: always()
-        run: ls -l -R
+      # - if: always()
+      #   run: ls -l -R

@@ -7,10 +7,11 @@ jobs:
     steps:
       - run: echo '::echo::on'
       - uses: actions/checkout@main
-      - run: |
-          cd /; ls -l
-          echo "*********************************"
-          cd /; ls -l -R
+      - run: cd /; ls -l
+      - run: cd /lib; ls -l
+      - run: cd /lib32; ls -l
+      - run: cd /lib64; ls -l
+      - run: cd /libx32; ls -l
       - run: |
           wget -nc -nv https://github.com/wpilibsuite/opensdk/releases/download/v2023-4/armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
           tar xzf ./armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz

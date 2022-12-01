@@ -1,0 +1,16 @@
+name: Pi-gen Action
+on: workflow_dispatch
+
+jobs:
+  pi-gen-upload-image:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: usimd/pi-gen-action@v1.6.0
+        id: build
+        with:
+          image-name: test
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: pi-gen-image
+          path: ${{ steps.build.outputs.image-path }}

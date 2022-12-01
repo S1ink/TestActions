@@ -9,6 +9,9 @@ jobs:
         id: build
         with:
           image-name: test
+          verbose-output: true
+          pi-gen-repository: wpilibsuite/WPILibPi
+          pi-gen-version: main
 
       - uses: actions/upload-artifact@v3
         with:

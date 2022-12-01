@@ -10,8 +10,9 @@ jobs:
         with:
           image-name: test
           verbose-output: true
-          pi-gen-repository: wpilibsuite/WPILibPi
+          use-qcow2: 0
           pi-gen-version: main
+#          pi-gen-repository: wpilibsuite/WPILibPi
 
       - uses: actions/upload-artifact@v3
         with:

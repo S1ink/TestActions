@@ -11,7 +11,7 @@ jobs:
           image-name: test
           verbose-output: true
           use-qcow2: 0
-          pi-gen-version: main
+          pi-gen-version: master
 #          pi-gen-repository: wpilibsuite/WPILibPi
 
       - uses: actions/upload-artifact@v3

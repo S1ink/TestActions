@@ -2,27 +2,32 @@
 
 echo "****************************"
 arm-linux-gnueabihf-g++-10 --version
-grep arm-linux-gneuabihf-g++-10
-ldd /usr/bin/arm-linux-gnueabihf-g++-10
+which arm-linux-gnueabihf-g++-10
+ldd $(which arm-linux-gnueabihf-g++-10)
+arm-linux-gnueabihf-gcc-10 --version
+which arm-linux-gnueabihf-gcc-10
+ldd $(which arm-linux-gnueabihf-gcc-10)
+arm-linux-gnueabihf-ld-10 --version
+arm-linux-gnueabihf-ar-10 --version
 echo "****************************"
 
-sudo apt update
-sudo apt-get install wget
+# sudo apt update
+# sudo apt-get install wget
 
-wget -nc -nv https://github.com/wpilibsuite/opensdk/releases/download/v2023-4/armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
-tar xzf ./armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
-export PATH=/test-tmp/raspi-bullseye/bin:${PATH}
-#export PATH=/test-tmp/lib-deps:${PATH}
+# wget -nc -nv https://github.com/wpilibsuite/opensdk/releases/download/v2023-4/armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
+# tar xzf ./armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
+# export PATH=/test-tmp/raspi-bullseye/bin:${PATH}
+# #export PATH=/test-tmp/lib-deps:${PATH}
 
-echo $(LD_LIBRARY_PATH=/test-tmp/lib-deps ldd /test-tmp/raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++)
-echo $(LD_LIBRARY_PATH=/test-tmp/lib-deps armv6-bullseye-linux-gnueabihf-g++ --version)
-LD_LIBRARY_PATH=/test-tmp/lib-deps armv6-bullseye-linux-gnueabihf-g++ --version
+# echo $(LD_LIBRARY_PATH=/test-tmp/lib-deps ldd /test-tmp/raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++)
+# echo $(LD_LIBRARY_PATH=/test-tmp/lib-deps armv6-bullseye-linux-gnueabihf-g++ --version)
+# LD_LIBRARY_PATH=/test-tmp/lib-deps armv6-bullseye-linux-gnueabihf-g++ --version
 
-sudo touch /etc/ld.so.conf.d/cc-10.conf
-echo $(echo "/test-tmp/lib-deps" | sudo tee -a /etc/ld.so.conf.d/cc-10.conf)
-sudo ldconfig -v
+# sudo touch /etc/ld.so.conf.d/cc-10.conf
+# echo $(echo "/test-tmp/lib-deps" | sudo tee -a /etc/ld.so.conf.d/cc-10.conf)
+# sudo ldconfig -v
 
-echo $(ldd /test-tmp/raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++)
-echo $(armv6-bullseye-linux-gnueabihf-g++ --version)
-ldd /test-tmp/raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++
-armv6-bullseye-linux-gnueabihf-g++ --version
+# echo $(ldd /test-tmp/raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++)
+# echo $(armv6-bullseye-linux-gnueabihf-g++ --version)
+# ldd /test-tmp/raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++
+# armv6-bullseye-linux-gnueabihf-g++ --version

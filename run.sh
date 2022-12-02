@@ -9,7 +9,6 @@ which arm-linux-gnueabihf-gcc-10
 ldd $(which arm-linux-gnueabihf-gcc-10)
 arm-linux-gnueabihf-ld --version
 arm-linux-gnueabihf-ar --version
-grep arm-linux-gnueabihf
 pushd "/usr/bin"
 ls -l
 popd

@@ -1,9 +1,9 @@
 #!/bin/bash -eu
 
 echo "****************************"
-arm-linux-gnueabhif-g++-10 --version
+arm-linux-gnueabihf-g++-10 --version
 grep arm-linux-gneuabihf-g++-10
-ldd /usr/bin/arm-linux-gnueabhif-g++-10
+ldd /usr/bin/arm-linux-gnueabihf-g++-10
 echo "****************************"
 
 sudo apt update

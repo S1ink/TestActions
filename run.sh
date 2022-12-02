@@ -1,5 +1,11 @@
 #!/bin/bash -eu
 
+echo "****************************"
+arm-linux-gnueabhif-g++-10 --version
+grep arm-linux-gneuabihf-g++-10
+ldd /usr/bin/arm-linux-gnueabhif-g++-10
+echo "****************************"
+
 sudo apt update
 sudo apt-get install wget
 

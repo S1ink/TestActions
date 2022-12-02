@@ -10,7 +10,7 @@ RUN apt-get -y update && \
         quilt coreutils qemu-user-static debootstrap zerofree zip dosfstools \
         bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod bc\
         binfmt-support ca-certificates \
-        build-essential cmake python3 python3-distutils python3-jinja2 ant sudo openjdk-11-jdk \
+        build-essential g++-10-arm-linux-gnueabihf cmake python3 python3-distutils python3-jinja2 ant sudo openjdk-11-jdk \
     && rm -rf /var/lib/apt/lists/*
 
 COPY . /test-tmp/

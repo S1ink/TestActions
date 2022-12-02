@@ -19,6 +19,9 @@ jobs:
           ldd $GITHUB_WORKSPACE/raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++
           armv6-bullseye-linux-gnueabihf-g++ --version
       - run: |
+          sudo apt-get update
+          sudo apt-get --no-install-recommends --no-install-suggests install -y binfmt-support qemu-user-static qemu-utils nbd-server nbd-client
+          sudo modprobe -a binfmt_misc nbd
           sudo chmod +x {./container.sh,./run.sh}
           sudo ./container.sh
       # - if: always()

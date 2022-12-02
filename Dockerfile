@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=i386/debian:buster
+ARG BASE_IMAGE=i386/debian:bullseye
 ARG GEN_IMAGE=wpilib/pi-gen:latest
 FROM ${BASE_IMAGE}
 

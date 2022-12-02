@@ -7,12 +7,12 @@ ldd $(which arm-linux-gnueabihf-g++-10)
 arm-linux-gnueabihf-gcc-10 --version
 which arm-linux-gnueabihf-gcc-10
 ldd $(which arm-linux-gnueabihf-gcc-10)
-echo $(arm-linux-gnueabihf-ld --version)
-echo $(arm-linux-gnueabihf-ld-10 --version)
-echo $(arm-linux-gnueabihf-ar --version)
-echo $(arm-linux-gnueabihf-ar-10 --version)
+arm-linux-gnueabihf-ld --version
+arm-linux-gnueabihf-ar --version
 grep arm-linux-gnueabihf
-$(cd /usr/bin; ls -l)
+pushd "/usr/bin"
+ls -l
+popd
 echo "****************************"
 
 # sudo apt update

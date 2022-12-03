@@ -14,6 +14,13 @@ ls -l
 popd
 echo "****************************"
 
+sudo apt-get install libpython3.9-minimal libpython3.9-dev python3.9-minimal python3.9-dev python3-distutils
+
+pushd "/usr/include"
+ls -l -R
+popd
+find /usr/include -name Python.h
+
 # sudo apt update
 # sudo apt-get install wget
 

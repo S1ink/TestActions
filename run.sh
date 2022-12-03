@@ -15,8 +15,8 @@ arm-linux-gnueabihf-ar --version
 echo "****************************"
 
 sudo apt-get update
-sudo apt-get install python3-dev
-echo $(sudo apt-get install libpython3.9-minimal libpython3.9-dev python3.9-minimal python3.9-dev python3-distutils)
+sudo apt-get install python3-dev -y
+#echo $(sudo apt-get install libpython3.9-minimal libpython3.9-dev python3.9-minimal python3.9-dev python3-distutils)
 
 pushd "/usr/include"
 ls -l -R

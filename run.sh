@@ -15,16 +15,17 @@ arm-linux-gnueabihf-ar --version
 echo "****************************"
 
 sudo apt-get update
-sudo apt-get install python3-dev -y
+sudo apt-get install python3-dev python3-numpy -y
 #echo $(sudo apt-get install libpython3.9-minimal libpython3.9-dev python3.9-minimal python3.9-dev python3-distutils)
 
+echo "****************************"
 pushd "/usr/include"
 ls -l -R
 popd
+echo "****************************"
 find /usr/include -name Python.h
 find / -iname python.h
-python-config --cflags
-python-config --ldflags
+echo "****************************"
 
 # sudo apt update
 # sudo apt-get install wget

@@ -9,17 +9,22 @@ which arm-linux-gnueabihf-gcc-10
 ldd $(which arm-linux-gnueabihf-gcc-10)
 arm-linux-gnueabihf-ld --version
 arm-linux-gnueabihf-ar --version
-pushd "/usr/bin"
-ls -l
-popd
+# pushd "/usr/bin"
+# ls -l
+# popd
 echo "****************************"
 
-sudo apt-get install libpython3.9-minimal libpython3.9-dev python3.9-minimal python3.9-dev python3-distutils
+sudo apt-get update
+sudo apt-get install python3-dev
+echo $(sudo apt-get install libpython3.9-minimal libpython3.9-dev python3.9-minimal python3.9-dev python3-distutils)
 
 pushd "/usr/include"
 ls -l -R
 popd
 find /usr/include -name Python.h
+find / -iname python.h
+python-config --cflags
+python-config --ldflags
 
 # sudo apt update
 # sudo apt-get install wget

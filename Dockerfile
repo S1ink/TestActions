@@ -1,5 +1,5 @@
 ARG BASE_IMAGE=i386/debian:bullseye
-ARG GEN_IMAGE=wpilib/pi-gen:latest
+#ARG GEN_IMAGE=wpilib/pi-gen:latest
 FROM ${BASE_IMAGE}
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -18,8 +18,10 @@ RUN apt-get -y update && \
         git parted \
         quilt coreutils qemu-user-static zerofree zip dosfstools \
         libarchive-tools libcap2-bin grep udev xz-utils curl xxd file kmod bc\
-        binfmt-support ca-certificates qemu-utils kpartx fdisk sudo \
+        binfmt-support ca-certificates qemu-utils kpartx fdisk sudo wget \
     && rm -rf /var/lib/apt/lists/*
+
+RUN echo "deb http://deb.debian.org/debian testing main non-free contrib" > /etc/apt/sources.list && sudo apt update
 
 COPY . /test-tmp/
 

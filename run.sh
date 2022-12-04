@@ -5,6 +5,8 @@ echo "deb http://mirrors.xmission.com/debian/ testing main non-free contrib" > /
 echo "deb http://http.us.debian.org/debian testing main contrib non-free" > /etc/apt/sources.list
 echo "deb http://ftp.us.debian.org/debian testing main non-free contrib" > /etc/apt/sources.list
 
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
+sudo apt-get update
 sudo apt update
 sudo apt-get install wget g++-11 g++-11-arm-linux-gnueabihf -y
 

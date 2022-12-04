@@ -18,7 +18,7 @@ RUN apt-get -y update && \
         git parted \
         quilt coreutils qemu-user-static zerofree zip dosfstools \
         libarchive-tools libcap2-bin grep udev xz-utils curl xxd file kmod bc\
-        binfmt-support ca-certificates qemu-utils kpartx fdisk \
+        binfmt-support ca-certificates qemu-utils kpartx fdisk sudo \
     && rm -rf /var/lib/apt/lists/*
 
 COPY . /test-tmp/

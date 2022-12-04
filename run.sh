@@ -1,33 +1,40 @@
 #!/bin/bash -eu
 
 cat /etc/apt/sources.list
+echo "deb http://mirrors.xmission.com/debian/ testing main non-free contrib" > /etc/apt/sources.list
+echo "deb http://http.us.debian.org/debian testing main contrib non-free" > /etc/apt/sources.list
+echo "deb http://ftp.us.debian.org/debian testing main non-free contrib" > /etc/apt/sources.list
 
-echo "****************************"
-arm-linux-gnueabihf-g++-10 --version
-which arm-linux-gnueabihf-g++-10
-ldd $(which arm-linux-gnueabihf-g++-10)
-arm-linux-gnueabihf-gcc-10 --version
-which arm-linux-gnueabihf-gcc-10
-ldd $(which arm-linux-gnueabihf-gcc-10)
-arm-linux-gnueabihf-ld --version
-arm-linux-gnueabihf-ar --version
-# pushd "/usr/bin"
-# ls -l
+sudo apt update
+sudo apt-get install g++-11
+sudo apt-get install g++-10-arm-linux-gnueabihf
+
+# echo "****************************"
+# arm-linux-gnueabihf-g++-10 --version
+# which arm-linux-gnueabihf-g++-10
+# ldd $(which arm-linux-gnueabihf-g++-10)
+# arm-linux-gnueabihf-gcc-10 --version
+# which arm-linux-gnueabihf-gcc-10
+# ldd $(which arm-linux-gnueabihf-gcc-10)
+# arm-linux-gnueabihf-ld --version
+# arm-linux-gnueabihf-ar --version
+# # pushd "/usr/bin"
+# # ls -l
+# # popd
+# echo "****************************"
+
+# sudo apt-get update
+# sudo apt-get install python3-dev python3-numpy -y
+# #echo $(sudo apt-get install libpython3.9-minimal libpython3.9-dev python3.9-minimal python3.9-dev python3-distutils)
+
+# echo "****************************"
+# pushd "/usr/include"
+# ls -l -R
 # popd
-echo "****************************"
-
-sudo apt-get update
-sudo apt-get install python3-dev python3-numpy -y
-#echo $(sudo apt-get install libpython3.9-minimal libpython3.9-dev python3.9-minimal python3.9-dev python3-distutils)
-
-echo "****************************"
-pushd "/usr/include"
-ls -l -R
-popd
-echo "****************************"
-find /usr/include -name Python.h
-find / -iname python.h
-echo "****************************"
+# echo "****************************"
+# find /usr/include -name Python.h
+# find / -iname python.h
+# echo "****************************"
 
 # sudo apt update
 # sudo apt-get install wget

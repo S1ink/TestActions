@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-#cat /etc/apt/sources.list
+cat /etc/apt/sources.list
 #echo "deb http://deb.debian.org/debian testing main non-free contrib" > /etc/apt/sources.list
 # echo "deb http://mirrors.xmission.com/debian/ testing main non-free contrib" > /etc/apt/sources.list
 # echo "deb http://http.us.debian.org/debian testing main contrib non-free" > /etc/apt/sources.list
@@ -9,7 +9,7 @@
 # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
 # sudo apt-get update
 #sudo apt update
-sudo apt-get install g++-11 -y
+#sudo apt-get install g++-11 -y
 
 wget -nc -nv https://github.com/wpilibsuite/opensdk/releases/download/v2023-4/armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
 tar xzf armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz

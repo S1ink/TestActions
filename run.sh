@@ -14,6 +14,7 @@ sudo apt-get install wget g++-11 -y
 wget -nc -nv https://github.com/wpilibsuite/opensdk/releases/download/v2023-4/armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
 tar xzf armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
 ./raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++ --version
+./raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++ -v --help 2> /dev/null | sed -n '/^ *-std=\([^<][^ ]\+\).*/ {s//\1/p}'
 
 # echo "****************************"
 # arm-linux-gnueabihf-g++-10 --version

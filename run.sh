@@ -1,5 +1,7 @@
 #!/bin/bash -eu
 
+cat /etc/apt/sources.list
+
 echo "****************************"
 arm-linux-gnueabihf-g++-10 --version
 which arm-linux-gnueabihf-g++-10

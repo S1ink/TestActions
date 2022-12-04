@@ -6,8 +6,12 @@ echo "deb http://http.us.debian.org/debian testing main contrib non-free" > /etc
 echo "deb http://ftp.us.debian.org/debian testing main non-free contrib" > /etc/apt/sources.list
 
 sudo apt update
-sudo apt-get install g++-11
-sudo apt-get install g++-10-arm-linux-gnueabihf
+sudo apt-get install g++-11 -y
+sudo apt-get install g++-10-arm-linux-gnueabihf -y
+
+wget -nc -nv https://github.com/wpilibsuite/opensdk/releases/download/v2023-4/armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
+tar xzf armhf-raspi-bullseye-2023-i686-linux-gnu-Toolchain-10.2.0.tgz
+./raspi-bullseye/bin/armv6-bullseye-linux-gnueabihf-g++ --version
 
 # echo "****************************"
 # arm-linux-gnueabihf-g++-10 --version

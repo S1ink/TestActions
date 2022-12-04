@@ -20,9 +20,9 @@ RUN apt-get -y update && \
         libarchive-tools libcap2-bin grep udev xz-utils curl xxd file kmod bc \
         binfmt-support ca-certificates qemu-utils kpartx fdisk sudo wget \
     && rm -rf /var/lib/apt/lists/*
-RUN echo "deb http://deb.debian.org/debian testing main non-free contrib" > /etc/apt/sources.list && \
-    apt-get -y update &&  apt-get -y install --no-install-recommends g++-11 && \
-    sed -i -e 's/deb http://deb.debian.org/debian testing main non-free contrib//' /etc/apt/sources.list
+RUN echo "deb http://deb.debian.org/debian testing main non-free contrib" > /etc/apt/sources.list &&  apt-get -y update && \
+        apt-get -y install --no-install-recommends g++-11 && \
+    sed '$d' /etc/apt/sources.list && apt-get -y update
 
 COPY . /test-tmp/
 

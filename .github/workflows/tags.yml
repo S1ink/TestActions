@@ -1,0 +1,33 @@
+name: Update Release Artifacts
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  execute:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Self
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+      - name: Gather Params
+        id: params
+        run: |
+          echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+          echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+      - name: Create Artifact
+        run: |
+         touch data.txt
+         echo "hello world" >> data.txt
+      - name: Update Latest
+        uses: ncipollo/release-action@main
+        with:
+          artifacts: data.txt
+          allowUpdates: true
+          body: |
+            Last Updated: ${{ steps.params.outputs.date }}
+          commit: ${{ steps.params.outputs.commit }}
+          prerelease: false
+          tag: Latest
+

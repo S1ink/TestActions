@@ -25,6 +25,7 @@ jobs:
         with:
           tag: Latest
           commit_sha: ${{ steps.params.outputs.commit }}
+          force_push_tag: true
       - name: Update Latest
         uses: ncipollo/release-action@main
         with:

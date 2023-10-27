@@ -20,6 +20,12 @@ jobs:
         run: |
          touch data.txt
          echo "hello world" >> data.txt
+      - name: Update Tag Ref
+        uses: rickstaa/action-create-tag@main
+        with:
+          tag: Latest
+          commit_sha: ${{ steps.params.outputs.commit }}
+          force_push_tag: true
       - name: Update Latest
         uses: ncipollo/release-action@main
         with:

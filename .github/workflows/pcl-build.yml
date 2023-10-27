@@ -11,6 +11,11 @@ jobs:
         id: pcl-release
         run: echo "release=$(curl -s https://api.github.com/repos/PointCloudLibrary/pcl/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_OUTPUT
 
+      - name: Get Deps
+        run: |
+          sudo apt update
+          sudo apt-get install libboost-all-dev libeigen3-dev libflann-dev
+
       - name: Checkout PCL
         uses: actions/checkout@main
         with:

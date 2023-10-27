@@ -26,7 +26,7 @@ jobs:
         run: |
           ls -l
           mkdir build && cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -WITH_VTK=OFF -WITH_QT=OFF -WITH_CUDA=OFF -WITH_PCAP=OFF -WITH_OPENGL=OFF -DBUILD_visualization=OFF ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DWITH_VTK=OFF -DWITH_QT=OFF -DWITH_CUDA=OFF -DWITH_PCAP=OFF -DWITH_OPENGL=OFF -DBUILD_visualization=OFF ..
           make -j2
       
       - name: View

@@ -14,7 +14,7 @@ jobs:
       - name: Get Deps
         run: |
           sudo apt update
-          sudo apt-get install libboost-all-dev libeigen3-dev libflann-dev
+          sudo apt-get install libboost-all-dev libeigen3-dev libflann-dev libvtk6-dev
 
       - name: Checkout PCL
         uses: actions/checkout@main

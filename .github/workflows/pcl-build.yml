@@ -24,20 +24,21 @@ jobs:
 
       - name: Build
         run: |
-          ls -l
           mkdir build && cd build
           cmake -DCMAKE_BUILD_TYPE=Release -DWITH_VTK=OFF -DWITH_QT=OFF -DWITH_CUDA=OFF -DWITH_PCAP=OFF -DWITH_OPENGL=OFF -DBUILD_visualization=OFF ..
           make -j2
       
       - name: View
         run: |
+          ls -l
           cd build
           ls -l -R
       
       - name: Package
         run: |
           sudo apt-get install zip
-          cd ../
+          ls -l
+#          cd ../
           zip -r build.zip build
       
       - name: Upload

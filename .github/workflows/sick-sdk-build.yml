@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: build
-          path: sick_scan_ws/build.zip
+          path: sick_scan_ws/sick_scan_xd/build.zip
 
   build-ubuntu:
     runs-on: ubuntu-latest

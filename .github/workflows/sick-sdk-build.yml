@@ -24,7 +24,7 @@ jobs:
           set _cmake_string="Visual Studio 17 2022"
           set _msvc="Visual Studio 2022"
           set _cmake_build_dir=build
-          pushd %_cmake_build_dir%
+          pushd build
           cmake -DROS_VERSION=0 -G "%_cmake_string%" ..
           cmake --build . --clean-first --config Debug
           cmake --build . --clean-first --config Release

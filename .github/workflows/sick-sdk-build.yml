@@ -63,7 +63,7 @@ jobs:
           mkdir output
           cp -R {build-msgpk,build-sickxd} output
           cp -R sick_scan_xd/{include,doc,launch,python,examples,tools} output
-          pushd sick_scan_dx
+          pushd sick_scan_xd
           find . -name "*.md" -exec cp {} ../output \;
           popd
 

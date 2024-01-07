@@ -8,7 +8,7 @@ jobs:
     steps:
       - run: echo '::echo::on'
       - run: |
-          mvn org.apache.maven.plugins:maven-dependency-plugins:2.8:get \
+          mvn org.apache.maven.plugins:maven-dependency-plugins:3.6:get \
             -DrepoUrl=https://frcmaven.wpi.edu/artifactory/release/ \
             -Dartifact=edu.wpi.first.apriltag:apriltag-cpp:2024.1.1:linuxarm64@zip
           ls -l -R
